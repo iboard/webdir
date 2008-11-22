@@ -20,6 +20,9 @@
   forced to change the password.
   
   
+  IF YOU HAVE TROUBLES WITH AUTHENTICATION ON AN APACHE/FASTCGI INSTALLATION
+  READ http://iboard.cc/postings/93
+  
 == CONFIG AND USAGE NOTES
 
   webdir will not create the files-directory for a new user.
