@@ -1,0 +1,59 @@
+== Welcome to WEBDIR
+
+  Webdir is a simple webinterface to upload and maintain files on a webserver
+  
+== QUICKSTART
+
+  * Create a VirtualHost or start the server of the webdir rails application
+  * Create the User's webdirfiles directory and configure at the bottom of 
+    config/environment.rb
+    
+  Create a Userdir example:
+    mkdir -p /home/USERNAME/files/webdirfiles
+  
+  optional at user creation:
+    htpasswd -c /home/USERNAME/files/webdirfiles/.webdirusers admin
+    htpasswd /home/USERNAME/files/webdirfiles/.webdirusers other_users
+
+  If optional steps not done the user is able to log in as user admin
+  with password admin for the first time and will be redirected and 
+  forced to change the password.
+  
+  
+== CONFIG AND USAGE NOTES
+
+  webdir will not create the files-directory for a new user.
+  Sysadmin must
+    mkdir USER_HOMES/USER_HTML_DIR/webdirfiles
+    chown apache USER_HOMES/USER_HTML_DIR/webdirfiles
+    
+  Where USER_HOMES and USER_HTML_DIR is defined in environments.rb such like
+  
+  USER_HOMES = "/mnt/raid1/Users"
+  USER_HTML_DIR = 'files'
+   
+  This config will search files in: /mnt/raid1/Users/USERNAME/files/webdirfiles
+  where USERNAME is the name given at the address of
+  
+  http://your.server.somewhere/USERNAME
+  
+  USERNAME will be stored as cookie and webir will search for a file named
+  /mnt/raid1/Users/USERNAME/files/webdirfiles/.webdirusers
+  which is a standard htpasswd-generated file.
+  
+  if .webdirusers will not be find the first-time log in will be 
+  
+  admin/admin
+  
+  You have to change the password admin to something more secure or will not
+  be able to leave the 'set password form'.
+  
+  
+== Author ==
+
+  (c) Andreas Altendorfer, Nov 2008
+  andreas@iboard.cc
+  
+  License GPL
+  warranty none
+  

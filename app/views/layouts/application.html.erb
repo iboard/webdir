@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Webdir</title>
+    <%= javascript_include_tag :defaults  %>
+  </head>
+  <style type="text/css" media="screen">
+    * {
+      font-family: "Arial";
+      font-size: 12px;
+    }
+    H1 { font-size: 24px; text-align: center; border-bottom: 1px solid black;}
+    H2 { text-align: center; }
+    pre { font-family: Courier; }
+  </style>
+<body>
+  <h1>Webdirectory <%= File::basename session['user_path'] -%></h1>
+  <h2><%= @user -%>
+    <% if @user == 'admin' %> 
+       -
+      <%= link_to 'Passwörter verwalten', passwords_path %>
+    <% end %>
+  </h2>
+
+  <% flash.each do |f| %>
+     <div style='color: <%= f[0] == :error ? 'red' : 'green'-%>; border: 1px solid <%= f[0] == :error ? 'red' : 'green'-%>; padding: 10px;'><%=  f[1] -%></div>
+  <% end %>
+  
+  
+  <%= yield %>
+</body>
+</html>

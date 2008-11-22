@@ -1,0 +1,66 @@
+<% form_tag '/file_action', :multipart => true, :id => 'myform' do %>
+<%= hidden_field_tag 'path', Base64::encode64(@path).gsub(/ |\n|\r/,"") -%>
+  <table border=0  cellspacing=0 cellpadding=5>
+    <tr><th width=200> <% @pathtrack[0..@pathtrack.length()-2].each do |b| %>
+        / <%= link_to b[0], change_folder_path(Base64::encode64(b[1]).gsub(/ |\n|\r/,"")) -%>
+      <% end %>
+        <% if params['path'] != '' %> / 
+           <%= actual_path = File::basename @path.gsub("#{session['user_path']}","") -%>
+           <% owner = @user == 'admin' || @user == actual_path %>
+         <% end %>
+      </th><th>Dateien</th></tr>
+    <tr>
+      <td valign=top align=center width=200>
+        <table border=1 cellspacing=0 cellpadding=5>
+          <tr><th>Verzeichnis</th><% if owner %><th>Löschen</th><% end %></tr>
+          <% @folders.each do |folder| %>
+            <% if not File::fnmatch('.*', folder.gsub(/(.*\/)/,'')) %><tr>
+              <td align=left><%= link_to( File::basename(folder), 
+                                   change_folder_path(Base64::encode64(folder).gsub(/ |\n|\r/,"")) )-%></td>
+              <% if owner %><td align=center><%= check_box_tag 'rmdir[]', folder %></td><% end %></tr>
+            <% end %>
+          <% end %>
+        </table>
+        <br/>
+        <% if owner %>
+          Neues Verzeichnis:</br><%= text_field_tag 'new_directory' %>
+        <% end %>
+      </td>
+      <td valign=top>
+        <table border=1 cellspacing=0 cellpadding=5>
+          <tr><th>Filename</th>
+            <% if owner %>
+              <th>Löschen
+              <a href=# onClick="$$('#myform input.check').each(function(box){box.checked=true});return false;">alle</a> |
+          		<a href=# onClick="$$('#myform input.check').each(function(box){box.checked=false});return false;">keine</a>
+              </th><th>Neuer Name</th>
+            <% end %><th>Letzte Änderung</th><th>Größe</th></tr>
+          <% @files.each do |file| %>
+            <tr>
+              <td><b><%- b = Base64::encode64(file).gsub(/ |\n/,"") -%><%= link_to(File::basename(file), download_path(b)) -%></b></td>
+              <% if owner %>
+                <td align=center><input type=checkbox name='delete[]' value='<%= file -%>' class='check'></td>
+                <td><%= text_field "rename[#{file}]", '' %></td>
+              <% end %>
+              <td><%= File::mtime(file) -%></td>
+              <td><%= File::size(file) -%> Bytes</td>
+            </tr>
+          <% end %>
+        </table>
+        <% if owner %>
+          <blockquote>
+            Upload: <%= file_field_tag 'new_file' -%><br/>
+            <br/> 
+          </blockquote>
+        <% end %>
+      </td>
+    </tr>
+    <% if owner %>
+    <tr>
+      <td valign=top align=center colspan=2>
+        <%= submit_tag 'Ausführen' -%>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
