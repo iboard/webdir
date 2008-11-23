@@ -23,7 +23,7 @@
         </table>
         <br/>
         <% if owner %>
-          Neues Verzeichnis:</br><%= text_field_tag 'new_directory' %>
+          Neues Verzeichnis:</br><%= text_field_tag 'new_directory', '', :size => 15 %>
         <% end %>
       </td>
       <td valign=top>
@@ -40,7 +40,7 @@
               <td><b><%- b = Base64::encode64(file).gsub(/ |\n/,"") -%><%= link_to(File::basename(file), download_path(b)) -%></b></td>
               <% if owner %>
                 <td align=center><input type=checkbox name='delete[]' value='<%= file -%>' class='check'></td>
-                <td><%= text_field "rename[#{file}]", '' %></td>
+                <td><%= text_field "rename[#{file}]", '',:size => 15 %></td>
               <% end %>
               <td><%= File::mtime(file) -%></td>
               <td><%= File::size(file) -%> Bytes</td>

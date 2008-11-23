@@ -1,31 +1,77 @@
+<%- content_for :copyright do -%>
+ © 2008 by Andreas Altendorfer, Austria
+<%- end -%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
+  <!--
+    
+      iBoard 3.0 RAILS FRAMEWORK FOR CONTENT MANAGEMENT AND BLOG SYSTEMS
+      by Andreas Altendorfer, <andreas@altendorfer.at>
+      
+      This is a development preVersion
+      Please visit http://iboard.cc if you look for an official release
+    
+  -->
   <head>
-    <title>Webdir</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title><%= yield :title -%></title>
+    <%= stylesheet_tag 'application', {} %>
     <%= javascript_include_tag :defaults  %>
   </head>
-  <style type="text/css" media="screen">
-    * {
-      font-family: "Arial";
-      font-size: 12px;
-    }
-    H1 { font-size: 24px; text-align: center; border-bottom: 1px solid black;}
-    H2 { text-align: center; }
-    pre { font-family: Courier; }
-  </style>
-<body>
-  <h1>Webdirectory <%= File::basename session['user_path'] -%></h1>
-  <h2><%= @user -%>
-    <% if @user == 'admin' %> 
-       -
-      <%= link_to 'Passwörter verwalten', passwords_path %>
-    <% end %>
-  </h2>
+  
+  <body>	
+	  <div id="overlay" style='display: none;'>
+		  <% round_box do %>
+		    <div style='float: right; height: 40px; margin-bottom: 10px; position: relative; z-index: 100;'>[<%= close_overlay -%>]</div>
+  		  <div id='overlay_content'></div>
+      <% end %>
+    </div>
+	  <div id="overlay_spinner" style='display: none;'>
+		  <% round_box do %>
+        <h1><%= image_tag 'spinner.gif', :valign => 'middle' -%>&nbsp;&nbsp;&nbsp;<%= 'Loading ....' -%></h1>
+      <% end %>
+    </div>
+  
+    <div class='page_container'>
 
-  <% flash.each do |f| %>
-     <div style='color: <%= f[0] == :error ? 'red' : 'green'-%>; border: 1px solid <%= f[0] == :error ? 'red' : 'green'-%>; padding: 10px;'><%=  f[1] -%></div>
-  <% end %>
-  
-  
-  <%= yield %>
-</body>
+      <div class='header_row'>
+	       <div class='header_left'>&nbsp;</div>
+		     <div class='header_middle'>
+			   </div>
+			   <div class='header_right'>&nbsp;</div>
+  	  </div>
+
+  	  <div class='main_row'>
+	       <div class='main_left'>&nbsp;</div>
+		     <div class='main_middle'>
+					 <div class='flashes'>
+	           <%- flash.each do |fls| -%>
+	             <%- if not fls[1].nil? -%>
+	             <% round_box do %>
+   			      
+	               <%= tag :div, :id => "flash_#{fls[0]}" %><%= fls[1] -%></div>
+	             <% end %>
+	             <%- end -%>
+	           <%- end -%>
+	         </div>
+	          <% round_box do %>
+			        <div id='main'><%= yield %></div>
+			      <% end %>
+			   </div>
+			   <div class='main_right'>&nbsp;</div>
+  		</div>
+
+  		<div class='footer_row'>
+	       <div class='footer_left'>&nbsp;</div>
+		     <div class='footer_middle'>
+			      <br/><br/>
+		        <%= yield :copyright -%>
+		     </div>
+			   <div class='footer_right'>&nbsp;</div>
+  		</div>
+
+    </div>
+
+  </body>
 </html>
