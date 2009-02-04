@@ -1,5 +1,6 @@
 <%- content_for :copyright do -%>
- © 2008 by Andreas Altendorfer, Austria
+ <%= link_to 'iboard.cc', 'http://iboard.cc/fw' -%> |
+ <%= link_to '© 2008 by Andreas Altendorfer, Austria', 'http://www.altendorfer.at' -%> 
 <%- end -%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -65,7 +66,9 @@
   		<div class='footer_row'>
 	       <div class='footer_left'>&nbsp;</div>
 		     <div class='footer_middle'>
-			      <br/><br/>
+			      <br/><% if @user && @user == "admin" %>
+			        <%= link_to 'Users and Passwords', passwords_path -%> 
+			      <% end %><br/>
 		        <%= yield :copyright -%>
 		     </div>
 			   <div class='footer_right'>&nbsp;</div>

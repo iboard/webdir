@@ -9,6 +9,7 @@ class AdministrationController < ApplicationController
     @files = []
     @folders = []    
 
+    # LOAD FOLDERS AND FILES
     Dir.new(path).each do |f|
       if File::directory?(path +  "/" + f )
         if @user == 'admin' || f == 'public' || @user == f || File::basename(path) == @user
@@ -18,6 +19,8 @@ class AdministrationController < ApplicationController
         @files << path + "/" + f unless f[0] == ".".ord
       end
     end
+    
+    # BUILD PATH-LINKS
     pre = ""
     @pathtrack = [] 
     path.gsub("#{session['user_path']}",'Top').split('/').each { |back|
@@ -28,6 +31,7 @@ class AdministrationController < ApplicationController
     }
 
   end
+  
   
   def file_action
     redirect_to passwords_path if @change_password

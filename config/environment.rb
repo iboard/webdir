@@ -58,7 +58,7 @@ Rails::Initializer.run do |config|
   # config.active_record.default_timezone = :utc
   
   
-  USER_HOMES = "/Users"
+  USER_HOMES = "/var/webdir"
   USER_HTML_DIR = 'files'
 
 end
